@@ -11,9 +11,9 @@ public class Array2D {
     정수 n, left, right가 매개변수로 주어집니다. 주어진 과정대로 만들어진 1차원 배열을 return 하도록 solution 함수를 완성해주세요.*/
 
     public static void main(String[] args) {
-        int n = 3;
-        int left = 2;
-        int right = 5;
+        int n = 4;
+        long left = 7;
+        long right = 14;
         int[][] array2D = new int[n][n];
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {
@@ -24,8 +24,12 @@ public class Array2D {
                 }
             }
         }
+        int[] answer = new int[(int)(right - left) + 1];
+        for(int k = 0; k < right - left + 1; k++) {
+            answer[k] = array2D[(int)(left + k) / n][(int)(left + k) % n];
+        }
 
-        int[] array = new int[n*n];
+        /*int[] array = new int[n*n];
         for(int k = 0; k < n*n; k++) {
             array[k] = array2D[k / n][k % n];
         }
@@ -34,7 +38,7 @@ public class Array2D {
         for(int l = 0; l < right - left + 1; l++) {
             answer[l] = array[left + l];
             System.out.print(answer[l] + " ");
-        }
+        }*/
 
 
         /*int n = 3;
