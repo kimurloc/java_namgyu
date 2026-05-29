@@ -25,8 +25,6 @@ public class Array2D {
             }
         }
 
-
-
         int[] array = new int[n*n];
         for(int k = 0; k < n*n; k++) {
             array[k] = array2D[k / n][k % n];
@@ -37,6 +35,8 @@ public class Array2D {
             answer[l] = array[left + l];
             System.out.print(answer[l] + " ");
         }
+
+
         /*int n = 3;
         int left = 2;
         int right = 5;
