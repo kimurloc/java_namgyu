@@ -1,7 +1,11 @@
 package ch11.capsule.ex03;
 
-public class AccountBad {
-    public int balance;
+public class Account {
+    private int balance;
+
+    public int getBalance() {
+        return balance;
+    }
 
     public void deposit(int amount) {
         this.balance += amount;
