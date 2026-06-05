@@ -6,9 +6,17 @@ public class Test {
         d.eat();
         d.bark();
         launchTime(d);
+        animalCare((Animal)d);
     }
 
     static void launchTime(Animal a){
         a.eat();
+        a.sleep();
+    }
+
+    static void animalCare(Animal a){
+        a.eat();
+        a.move();
+        a.sleep();
     }
 }
