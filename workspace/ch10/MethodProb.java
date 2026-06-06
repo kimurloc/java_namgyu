@@ -1,89 +1,31 @@
 package ch10;
 
+// 세 과목의 총점과 평균을 계산하는 메서드를 작성하고 이를 출력하는 프로그램을 작성하세요.
 public class MethodProb {
-    static int sumMethod(int[] array) {
-        int sum = 0;
-        for(int i = 0; i < array.length; i++) {
-            sum += array[i];
-        }
-        return sum;
-    }
+    // int[] 점수 배열을 전달받아서 총점을 계산해서 반환하는 메서드(sum)
 
-    static double avgMethod(int[] array) {
-        double avg = sumMethod(array) / (double)array.length;
-        return Math.round(avg*10) / 10.0;
-    }
+    // int[] 점수 배열을 전달받아서 평균을 계산해서 반환하는 메서드(avg)
+    // 평균은 소수도 표현해야 함
 
-    /*static void printSumMethod(int num, String name) {
-        System.out.println(name + " : " + num);
-    }
+    // int[] 점수 배열을 전달 받아서 총점, 평균을 출력하는 메서드(printScore)
+    // 출력 예시:
+    // 총점: 268, 평균: 89.4
 
-    static void printAvgMethod(double num, String name) {
-        System.out.println(name + " : " + num);
-    }*/
+    void main(){
+        // haru는 국어, 영어, 수학 점수가 각각 80, 70, 56이다.
+        // namu는 국어, 영어, 수학 점수가 각각 90, 77, 80이다.
+        // brong이는 국어, 영어, 수학 점수가 각각 100, 99, 88이다.
 
-    static void printMethod(String name, int[] array) {
-        System.out.println(name + "'s sum : " + sumMethod(array) + ", avg : " + avgMethod(array));
-    }
+        // 이 셋의 총점과 평균을 구해서 출력하세요.
 
-    static void printAllMethod(int[] arr1, int[] arr2, int[] arr3) {
-        int sum = sumMethod(arr1) + sumMethod(arr2) + sumMethod(arr3);
-        double avg = (double)sum / (arr1.length + arr2.length + arr3.length);
-        System.out.println("All sum : " + sum + ", avg : " + Math.round(avg*10) / 10.0);
-    }
-
-    void main() {
         int[] haruScore = {80, 70, 56};
-        int[] namuScore = {90, 77, 80};
-        int[] brongScore = {100, 99, 88};
 
-        printMethod("haru", haruScore);
-        printMethod("namu", namuScore);
-        printMethod("brong", brongScore);
+        // 최종 출력 결과
+        // 총점: 217, 평균: 72.33333
+        // 총점: 247, 평균: 82.33333
+        // 총점: 287, 평균: 95.66666
 
-        printAllMethod(haruScore, namuScore, brongScore);
+        // 전체 총점: 732, 전체 평균: 81.33333
+
     }
-
-    /*static int sumMethod(int[] array) {
-        int sum = 0;
-        for(int i = 0; i < array.length; i++) {
-            sum += array[i];
-        }
-        return sum;
-    }
-
-    static double avgMethod(int sum, int num) {
-        double avg = (double)sum / num;
-        return avg;
-    }
-
-    static void printSumMethod(int num, String name) {
-        System.out.println(name + " : " + num);
-    }
-
-    static void printAvgMethod(double num, String name) {
-        System.out.println(name + " : " + num);
-    }
-
-    static void printAllMethod(int[] arr1, int[] arr2, int[] arr3) {
-        int sum = sumMethod(arr1) + sumMethod(arr2) + sumMethod(arr3);
-        System.out.println("All sum : " + sum);
-        double avg = (double)sum / (arr1.length + arr2.length + arr3.length);
-        System.out.println("All avg : " + avg);
-    }
-
-    void main() {
-        int[] haruScore = {80, 70, 56};
-        int[] namuScore = {90, 77, 80};
-        int[] brongScore = {100, 99, 88};
-
-        printSumMethod(sumMethod(haruScore), "haru's sum");
-        printAvgMethod(avgMethod(sumMethod(haruScore), haruScore.length), "haru's avg");
-        printSumMethod(sumMethod(namuScore), "namu's sum");
-        printAvgMethod(avgMethod(sumMethod(namuScore), namuScore.length), "namu's avg");
-        printSumMethod(sumMethod(brongScore), "brong's sum");
-        printAvgMethod(avgMethod(sumMethod(brongScore), brongScore.length), "brong's avg");
-
-        printAllMethod(haruScore, namuScore, brongScore);
-    }*/
 }
