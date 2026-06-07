@@ -6,6 +6,8 @@ public class Bus extends Car{
     private String type;
     private int price;
     private int maxPassengerCount;
+    private int totalMoney;
+    private int passengerAge;
 
     public Bus(String model, String num, int price, String type, int maxPassengerCount) {
         super(model);
@@ -15,16 +17,36 @@ public class Bus extends Car{
         this.maxPassengerCount = maxPassengerCount;
     }
 
-    void ride(){
-        if(passengerCount < maxPassengerCount) {
-            passengerCount++;
+    void ride(int passengerAge){
+        if(passengerAge < 0 || passengerAge > 120){
+            System.out.println("passenger must be between 0~120 age");
         }else{
-            System.out.println("bus full");
+            incPassengerNum(passengerAge);
         }
     }
 
-    void leave(){
-        passengerCount--;
+    void incPassengerNum(int passengerAge){
+        if(passengerCount < maxPassengerCount) {
+            if(passengerAge >= 65){
+                passengerCount++;
+            }else if(passengerAge > 19){
+                totalMoney += price;
+                passengerCount++;
+            }else{
+                totalMoney += 700;
+                passengerCount++;
+            }
+        }else{
+            System.out.println("bus full, passenger cannot ride anymore");
+        }
+    }
+
+    void leave(int passengerNum){
+        if(passengerNum > passengerCount){
+            passengerCount = 0;
+        }else{
+            passengerCount -= passengerNum;
+        }
     }
 
     /*void stop(){
@@ -35,5 +57,6 @@ public class Bus extends Car{
     void getBusInfo(){
         System.out.println("bus : " + num + "(" + type + ")");
         System.out.println("number of bus passenger : " + passengerCount + "/" + maxPassengerCount);
+        System.out.println("total money : " + totalMoney);
     }
 }
