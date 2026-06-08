@@ -4,7 +4,7 @@ public class CarTest {
     void main() {
         Bus bus1 = new Bus("electric bus", "990",
                 "commuter", 20);
-        Bus bus2 = new Bus("electric bus", "399",
+        Bus bus2 = new Bus("lpg bus", "399",
                 "commuter", 25);
         //car.model = "ray";
         //bus.speed = 30;
