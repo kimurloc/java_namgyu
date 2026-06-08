@@ -4,15 +4,15 @@ public class Bus extends Car{
     private int passengerCount = 0;
     private String num;
     private String type;
-    private int price;
+    private int price = 0;
     private int maxPassengerCount;
-    private int totalMoney;
-    private int passengerAge;
+    private static int totalMoney;
+    //private int passengerAge;
 
-    public Bus(String model, String num, int price, String type, int maxPassengerCount) {
+    public Bus(String model, String num, String type, int maxPassengerCount) {
         super(model);
         this.num = num;
-        this.price = price;
+        //this.price = price;
         this.type = type;
         this.maxPassengerCount = maxPassengerCount;
     }
@@ -30,9 +30,11 @@ public class Bus extends Car{
             if(passengerAge >= 65){
                 passengerCount++;
             }else if(passengerAge > 19){
-                totalMoney += price;
+                price += 1500;
+                totalMoney += 1500;
                 passengerCount++;
             }else{
+                price += 700;
                 totalMoney += 700;
                 passengerCount++;
             }
@@ -57,6 +59,7 @@ public class Bus extends Car{
     void getBusInfo(){
         System.out.println("bus : " + num + "(" + type + ")");
         System.out.println("number of bus passenger : " + passengerCount + "/" + maxPassengerCount);
+        System.out.println(num + " money : " + price);
         System.out.println("total money : " + totalMoney);
     }
 }
