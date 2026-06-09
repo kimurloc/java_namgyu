@@ -1,4 +1,4 @@
-package ch11.mycar;
+package ch11.mycar.ex01;
 
 public class Car {
     String model;
