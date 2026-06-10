@@ -30,6 +30,10 @@ class ResizableArray{
     public String get(int index){
         return elements[index];
     }
+
+    /*public void delete(int index){
+        elements[index] = null;
+    }*/
 }
 
 public class ArrayTest {
@@ -48,6 +52,8 @@ public class ArrayTest {
         list.add("Pineapple");
 
         System.out.println(list.get(1));
+        /*list.delete(1);
+        System.out.println(list.toString());*/
 
         /*String[] tempList = new String[list.length*2];
         for(int i = 0; i < list.length; i++){
