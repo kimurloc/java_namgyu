@@ -27,8 +27,8 @@ INSERT INTO post (member_id, title, content, created_at, view_count) VALUES
 (1, 'PATCH vs PUT 차이', 'API 설계하다가 헷갈려서 정리함.', '2026-06-05 10:15:22', 19),
 (2, '취업 준비 팁 공유', '포폴, 코테, 면접 준비 경험 나눔.', '2026-06-10 09:02:37', 30),
 (3, '요즘 읽는 책', '개발 책 말고 그냥 에세이 읽는 중. 환기 되는 느낌.', '2026-06-14 15:33:11', 5),
-(1, '팀 프로젝트 후기', '첫 협업 프로젝트 끝남. 소통이 제일 중요하더라.', '2026-06-17 11:48:59', 27),
-(2, '개발자 번아웃 극복', '슬럼프 왔을 때 어떻게 극복했는지 공유함.', '2026-06-20 09:22:31', 24);
+(1, '팀 프로젝트 후기', '첫 협업 프로젝트 끝남. 소통이 제일 중요하더라.', default, 27),
+(2, '개발자 번아웃 극복', '슬럼프 왔을 때 어떻게 극복했는지 공유함.', default, 24);
 
 -- 3. reply 테이블에 샘플 댓글 30개를 추가하세요.(작성일은 기본값 대신 각각 다른 값으로 직접 입력하세요.)
 -- 작성일은 기본값(CURRENT_TIMESTAMP) 대신 각각 다른 값으로 직접 입력하세요.
@@ -65,7 +65,7 @@ INSERT INTO reply (post_id, member_id, content, created_at) VALUES
 (15, 3, '동쪽이랑 서쪽 분위기 꽤 다름. 나눠서 짜봐.', '2026-05-29 16:48:09');
 
 -- 4. post 테이블에서 조회수(view_count)가 10회 이상인 게시글의 제목, 조회수를 조회하세요.
-select title, view_count from post where view_count > 10;
+select title, view_count from post where view_count >= 10;
 
 -- 5. post 테이블에서 2번 회원(member_id = 2)이 작성한 모든 게시글의 작성자, 제목, 작성일을 최신순(작성일 내림차순)으로 조회하세요.
 select member_id, title, created_at from post where member_id = 2

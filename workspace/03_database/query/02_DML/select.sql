@@ -65,3 +65,4 @@ SELECT id, title, created_at
     FROM post
     ORDER BY created_at DESC
     LIMIT 2, 2;
+

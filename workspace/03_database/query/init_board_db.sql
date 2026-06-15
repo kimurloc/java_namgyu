@@ -42,14 +42,14 @@ CREATE TABLE reply (
 INSERT INTO member 
     VALUES (NULL, 'haru@gmail.com', 'pwd123', 'haru', '01012345678', DEFAULT);
 INSERT INTO member 
-    VALUES (NULL, 'namu@gmail.com', 'pwd456', 'namu', '01011112222', DEFAULT);
+    VALUES (NULL, 'namu@gmail.com', 'pwd456', 'namu', '01011112222', '2026-05-10 12:13:45');
 
-INSERT INTO member (email, password, name)
-    VALUES ('brong@gmail.com', 'pwd789', 'brong');
+INSERT INTO member (email, password, name, created_at)
+    VALUES ('brong@gmail.com', 'pwd789', 'brong', '2026-05-29 13:34:32');
 
-INSERT INTO member (email, password, name) VALUES 
-    ('harong2@gmail.com', 'pwd012', 'harong2'),
-    ('namu2@gmail.com', 'pwd456', 'namu2');
+INSERT INTO member (email, password, name, created_at) VALUES 
+    ('harong2@gmail.com', 'pwd012', 'harong2', '2026-05-29 13:34:32'),
+    ('namu2@gmail.com', 'pwd456', 'namu2', '2026-06-05 14:34:12');
 
 -- 게시글 데이터 삽입
 INSERT INTO post (member_id, title, content, created_at)
