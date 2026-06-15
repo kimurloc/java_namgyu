@@ -45,3 +45,38 @@ where created_at < date_sub(now(), interval '35 12' day_hour);
 
 select name, created_at, datediff(curdate(), created_at) as days_since_join
 from member;
+
+select count(*) from member;
+
+select count(*) from post;
+
+select member_id, count(*) as total_count
+from post
+where member_id = 3;
+
+select member_id, count(*) as total_count, 
+sum(view_count) as total_views, avg(view_count) as avg_view,
+min(view_count) as min_views, max(view_count) as max_views
+from post
+where member_id = 3;
+
+select name, ifnull(phone, '미등록') as phone
+from member;
+
+select name, ifnull(phone, ifnull(email ,'연락처 없음')) as contact
+from member;
+
+select name, coalesce(phone, email, '연락처 없음') as contact
+from member;
+
+select name, if(phone is null, '연락처 없음', '연락처 있음') as phone_status from member;
+
+select name, if(phone is null, if(email is null, '연락처 없음', email), phone) as phone_status from member;
+
+select name, created_at,
+case
+	when created_at < date_sub(now(), interval 1 year) then '우수 회원'
+	when created_at < date_sub(now(), interval 1 month) then '일반 회원'
+	else '신규 회원'
+end as member_grade
+from member;

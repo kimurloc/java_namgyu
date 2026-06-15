@@ -42,7 +42,7 @@ CREATE TABLE reply (
 INSERT INTO member 
     VALUES (NULL, 'haru@gmail.com', 'pwd123', 'haru', '01012345678', DEFAULT);
 INSERT INTO member 
-    VALUES (NULL, 'namu@gmail.com', 'pwd456', 'namu', '01011112222', '2026-05-10 12:13:45');
+    VALUES (NULL, 'namu@gmail.com', 'pwd456', 'namu', '01011112222', '2025-05-10 12:13:45');
 
 INSERT INTO member (email, password, name, created_at)
     VALUES ('brong@gmail.com', 'pwd789', 'brong', '2026-05-29 13:34:32');
