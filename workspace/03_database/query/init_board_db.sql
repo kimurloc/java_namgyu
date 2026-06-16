@@ -15,7 +15,10 @@ CREATE TABLE member (
 	password varchar(50) not null,
 	name varchar(50) not null,
 	phone char(12),
-	created_at datetime default CURRENT_TIMESTAMP()
+	recommender_id INT,
+	created_at datetime default CURRENT_TIMESTAMP(),
+	
+	foreign key (recommender_id) references member(id) on delete cascade
 );
 
 CREATE TABLE post (
@@ -40,16 +43,17 @@ CREATE TABLE reply (
 );
 
 INSERT INTO member 
-    VALUES (NULL, 'haru@gmail.com', 'pwd123', 'haru', '01012345678', DEFAULT);
+    VALUES (NULL, 'haru@gmail.com', 'pwd123', 'haru', '01012345678', null, DEFAULT);
 INSERT INTO member 
-    VALUES (NULL, 'namu@gmail.com', 'pwd456', 'namu', '01011112222', '2025-05-10 12:13:45');
+    VALUES (NULL, 'namu@gmail.com', 'pwd456', 'namu', '01011112222', 1, '2025-05-10 12:13:45');
 
-INSERT INTO member (email, password, name, created_at)
-    VALUES ('brong@gmail.com', 'pwd789', 'brong', '2026-05-29 13:34:32');
+INSERT INTO member (email, password, name, recommender_id, created_at)
+    VALUES ('brong@gmail.com', 'pwd789', 'brong', null, '2026-05-29 13:34:32');
 
-INSERT INTO member (email, password, name, created_at) VALUES 
-    ('harong2@gmail.com', 'pwd012', 'harong2', '2026-05-29 13:34:32'),
-    ('namu2@gmail.com', 'pwd456', 'namu2', '2026-06-05 14:34:12');
+INSERT INTO member (email, password, name, recommender_id, created_at) VALUES 
+    ('harong2@gmail.com', 'pwd012', 'harong2', 1, '2026-05-29 13:34:32'),
+    ('namu2@gmail.com', 'pwd456', 'namu2', 2, '2026-06-05 14:34:12'),
+	('haru2@gmail.com', 'pwd222', 'haru2', null, '2026-06-07 17:17:48');
 
 -- 게시글 데이터 삽입
 INSERT INTO post (member_id, title, content, created_at)
@@ -104,8 +108,8 @@ INSERT INTO post (member_id, title, content, created_at, view_count) VALUES
 (1, 'PATCH vs PUT 차이', 'API 설계하다가 헷갈려서 정리함.', '2026-06-05 10:15:22', 19),
 (2, '취업 준비 팁 공유', '포폴, 코테, 면접 준비 경험 나눔.', '2026-06-10 09:02:37', 30),
 (3, '요즘 읽는 책', '개발 책 말고 그냥 에세이 읽는 중. 환기 되는 느낌.', '2026-06-14 15:33:11', 5),
-(4, '팀 프로젝트 후기', '첫 협업 프로젝트 끝남. 소통이 제일 중요하더라.', default, 27),
-(5, '개발자 번아웃 극복', '슬럼프 왔을 때 어떻게 극복했는지 공유함.', default, 24);
+(null, '팀 프로젝트 후기', '첫 협업 프로젝트 끝남. 소통이 제일 중요하더라.', default, 27),
+(null, '개발자 번아웃 극복', '슬럼프 왔을 때 어떻게 극복했는지 공유함.', default, 24);
 
 INSERT INTO reply (post_id, member_id, content, created_at) VALUES
 (3, 4, '날씨 좋은 날엔 산책이 최고죠.', '2026-06-10 14:02:18'),
