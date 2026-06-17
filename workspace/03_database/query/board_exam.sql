@@ -147,4 +147,4 @@ WHERE title OR content LIKE '%자바%';
 
 -- 7. 게시글 페이징 조회 (최신순으로 2페이지 분량의 게시글 10건 조회)
 SELECT id, title, created_at FROM post
-	ORDER BY created_at DESC LIMIT 0, 10;
+	ORDER BY created_at DESC LIMIT 10, 10;
