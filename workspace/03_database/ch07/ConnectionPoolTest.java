@@ -1,23 +1,38 @@
 package ch07;
 
-import java.sql.*;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
-public class JdbcPostPreparedTest {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/board_db?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true";
-    private static final String DB_USER = "user1";
-    private static final String DB_PASSWORD = "1111";
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class ConnectionPoolTest {
+
+    private static DataSource dataSource;
+
+    static{
+        HikariConfig config = new HikariConfig("/hikari.properties");
+        dataSource = new HikariDataSource(config);
+    }
 
     public static void main(String[] args){
-        //findAll(); //ok
-        //insert(3, "hello", "world"); //ok
-        //findById(6); //ok
-        //update(6, "title changed", "content changed"); //ok
-        delete(13); //ok
-        //findAll("자바"); //ok
-        //deleteAll(3); //ok
-        //findAll();
-        //login("namu@gmail.com", "pwd789"); //ok
-        //login("haru@gmail.com", "pwd123");
+        findAll();
+        insert(3, "hello", "world");
+        findById(6); //ok
+        update(6, "title changed", "content changed");
+        delete(13);
+        findAll("자바");
+        deleteAll(3);
+        findAll();
+        login("namu@gmail.com", "pwd789");
+        login("haru@gmail.com", "pwd123");
+
+        if(dataSource != null){
+            ((HikariDataSource)dataSource).close();
+        }
     }
 
     public static void login(String email, String password){
@@ -28,7 +43,7 @@ public class JdbcPostPreparedTest {
 
         try{
             // connect database by Connection
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = dataSource.getConnection();
 
             // create sql object by Statement
             pstmt = conn.prepareStatement(sql);
@@ -67,7 +82,7 @@ public class JdbcPostPreparedTest {
 
         try{
             // connect database by Connection
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = dataSource.getConnection();
 
             // create sql object by Statement
             pstmt = conn.prepareStatement(sql);
@@ -107,7 +122,7 @@ public class JdbcPostPreparedTest {
 
         try{
             // connect database by Connection
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = dataSource.getConnection();
 
             // create sql object by Statement
             pstmt = conn.prepareStatement(sql);
@@ -152,7 +167,7 @@ public class JdbcPostPreparedTest {
 
         try{
             // connect database by Connection
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = dataSource.getConnection();
 
             // create sql object by Statement
             pstmt = conn.prepareStatement(sql);
@@ -189,7 +204,7 @@ public class JdbcPostPreparedTest {
 
         try{
             // connect database by Connection
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = dataSource.getConnection();
 
             // create sql object by Statement
             pstmt = conn.prepareStatement(sql);
@@ -221,7 +236,7 @@ public class JdbcPostPreparedTest {
 
         try {
             // connect database by Connection
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = dataSource.getConnection();
 
             // create sql object by Statement
             pstmt = conn.prepareStatement(sql);
@@ -255,7 +270,7 @@ public class JdbcPostPreparedTest {
 
         try {
             // connect database by Connection
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = dataSource.getConnection();
 
             // create sql object by Statement
             pstmt = conn.prepareStatement(sql);

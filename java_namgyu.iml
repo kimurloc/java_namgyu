@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/workspace/02_oop" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/workspace/codingtest" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/workspace/03_database" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
