@@ -1,56 +1,29 @@
 package ch07;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
-public class JdbcPostTest {
+public class JdbcPostPreparedTest {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/board_db?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true";
     private static final String DB_USER = "user1";
     private static final String DB_PASSWORD = "1111";
 
     public static void main(String[] args){
-        findAll();
-        insert(3, "hello", "world");
-        findById(13);
-        update(29, "title changed", "content changed");
-        delete(13);
-        findAll();
-        deleteAll(4);
-        findAll();
+        //findAll(); //ok
+        //insert(3, "hello", "world"); //ok
+        //findById(6); //ok
+        //update(6, "title changed", "content changed"); //ok
+        delete(13); //ok
+        //findAll("자바"); //ok
+        //deleteAll(3); //ok
+        //findAll();
+        //login("namu@gmail.com", "pwd789"); //ok
+        //login("haru@gmail.com", "pwd123");
     }
 
-    static void insert(int memberId, String title, String content){
-        String sql = "INSERT INTO post (member_id, title, content) VALUES ("+memberId+", '"+title+"', '"+content+"')";
+    public static void login(String email, String password){
+        String sql = "SELECT * FROM member WHERE email = ? AND password = ?";
         Connection conn = null;
-        Statement stmt = null;
-
-        try{
-            // connect database by Connection
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-
-            // create sql object by Statement
-            stmt = conn.createStatement();
-
-            // execute sql and receive results
-            int affectedRows = stmt.executeUpdate(sql);
-            System.out.println("post registered : " + affectedRows);
-
-        }catch(Exception e){
-            System.out.println("exception occurred : " + e.getMessage());
-            e.printStackTrace();
-        }finally{
-            // release resources by desc(prevent nullpointerexception by if)
-            try{ if (stmt != null) stmt.close(); }catch(Exception e){}
-            try{ if (conn != null) conn.close(); }catch(Exception e){}
-        }
-    }
-
-    static void findAll(){
-        String sql = "SELECT * FROM post";
-        Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         try{
@@ -58,21 +31,22 @@ public class JdbcPostTest {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
             // create sql object by Statement
-            stmt = conn.createStatement();
+            pstmt = conn.prepareStatement(sql);
 
             // execute sql
-            rs = stmt.executeQuery(sql);
+            pstmt.setString(1, email);
+            pstmt.setString(2, password);
+            rs = pstmt.executeQuery();
 
             // receive results
-            while(rs.next()){
+            if(rs.next()){
+                System.out.println("login success");
                 int id = rs.getInt("id");
-                int memberId = rs.getInt("member_id");
-                String title = rs.getString("title");
-                String content = rs.getString("content");
-                int viewCount = rs.getInt("view_count");
-                String createdAt = rs.getString("created_at");
-                System.out.println("id : " + id + ", mid : " + memberId + ", title : " + title
-                        + ", content : " + content + ", views : " + viewCount + " " + createdAt);
+                String name = rs.getString("name");
+                String phone = rs.getString("phone");
+                System.out.println("ID : " + id + ", email : " + email + ", name : " + name + ", phone : " + phone);
+            }else{
+                System.out.println("incorrect id/password");
             }
 
         }catch(Exception e){
@@ -81,15 +55,54 @@ public class JdbcPostTest {
         }finally{
             // release resources by desc(prevent nullpointerexception by if)
             try{ if (rs != null) rs.close(); }catch(Exception e){}
-            try{ if (stmt != null) stmt.close(); }catch(Exception e){}
+            try{ if (pstmt != null) pstmt.close(); }catch(Exception e){}
             try{ if (conn != null) conn.close(); }catch(Exception e){}
         }
     }
 
-    static void findById(int id){
-        String sql = "SELECT * FROM post WHERE id = ";
+    static void insert(int memberId, String title, String content){
+        String sql = "INSERT INTO post (member_id, title, content) VALUES (?, ?, ?)";
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
+
+        try{
+            // connect database by Connection
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+            // create sql object by Statement
+            pstmt = conn.prepareStatement(sql);
+
+            // execute sql and receive results
+            pstmt.setInt(1, memberId);
+            pstmt.setString(2, title);
+            pstmt.setString(3, content);
+            int affectedRows = pstmt.executeUpdate();
+            System.out.println("post registered : " + affectedRows);
+
+        }catch(Exception e){
+            System.out.println("exception occurred : " + e.getMessage());
+            e.printStackTrace();
+        }finally{
+            // release resources by desc(prevent nullpointerexception by if)
+            try{ if (pstmt != null) pstmt.close(); }catch(Exception e){}
+            try{ if (conn != null) conn.close(); }catch(Exception e){}
+        }
+    }
+
+    static void findAll(){
+        findAll("");
+    }
+
+    static void findAll(String keyword){
+        String sql = "SELECT id, member_id as mid, title, content, view_count AS views, created_at FROM post";
+
+        boolean hasKeyword = (keyword != null && !keyword.equals(""));
+        if(hasKeyword){
+            sql += " WHERE title LIKE ? OR content LIKE ?";
+        }
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         try{
@@ -97,10 +110,56 @@ public class JdbcPostTest {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
             // create sql object by Statement
-            stmt = conn.createStatement();
+            pstmt = conn.prepareStatement(sql);
 
             // execute sql
-            rs = stmt.executeQuery(sql + id);
+            if(hasKeyword){
+                pstmt.setString(1, "%" + keyword + "%");
+                pstmt.setString(2, "%" + keyword + "%");
+            }
+            rs = pstmt.executeQuery();
+
+            // receive results
+            while(rs.next()){
+                int id = rs.getInt("id");
+                int memberId = rs.getInt("mid");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                int viewCount = rs.getInt("views");
+                String createdAt = rs.getString("created_at");
+                System.out.println("id : " + id + ", mid : " + memberId + ", title : " + title
+                        + ", content : " + content + ", views : " + viewCount + " " + createdAt);
+                /*System.out.println("id : " + id + ", title : " + title
+                        + ", content : " + content + ", views : " + viewCount + " " + createdAt);*/
+            }
+
+        }catch(Exception e){
+            System.out.println("exception occurred : " + e.getMessage());
+            e.printStackTrace();
+        }finally{
+            // release resources by desc(prevent nullpointerexception by if)
+            try{ if (rs != null) rs.close(); }catch(Exception e){}
+            try{ if (pstmt != null) pstmt.close(); }catch(Exception e){}
+            try{ if (conn != null) conn.close(); }catch(Exception e){}
+        }
+    }
+
+    static void findById(int id){
+        String sql = "SELECT * FROM post WHERE id = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try{
+            // connect database by Connection
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+            // create sql object by Statement
+            pstmt = conn.prepareStatement(sql);
+
+            // execute sql
+            pstmt.setInt(1, id);
+            rs = pstmt.executeQuery();
 
             // receive results
             while(rs.next()){
@@ -118,25 +177,31 @@ public class JdbcPostTest {
         }finally{
             // release resources by desc(prevent nullpointerexception by if)
             try{ if (rs != null) rs.close(); }catch(Exception e){}
-            try{ if (stmt != null) stmt.close(); }catch(Exception e){}
+            try{ if (pstmt != null) pstmt.close(); }catch(Exception e){}
             try{ if (conn != null) conn.close(); }catch(Exception e){}
         }
     }
 
     static void update(int id, String title, String content){
-        String sql = "UPDATE post SET title = '"+title+"', " + "content = '"+content+"' WHERE id = ";
+        String sql = "UPDATE post SET title = ?, content = ? WHERE id = ?";
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
 
         try{
             // connect database by Connection
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
             // create sql object by Statement
-            stmt = conn.createStatement();
+            pstmt = conn.prepareStatement(sql);
+
+            // create sql object by Statement
+            pstmt.setString(1, title);
+            pstmt.setString(2, content);
+            pstmt.setInt(3, id);
+            //pstmt = conn.prepareStatement(sql);
 
             // execute sql and receive results
-            int affectedRows = stmt.executeUpdate(sql + id);
+            int affectedRows = pstmt.executeUpdate();
             System.out.println("post changed : " + affectedRows);
 
         }catch(Exception e){
@@ -144,25 +209,27 @@ public class JdbcPostTest {
             e.printStackTrace();
         }finally{
             // release resources by desc(prevent nullpointerexception by if)
-            try{ if (stmt != null) stmt.close(); }catch(Exception e){}
+            try{ if (pstmt != null) pstmt.close(); }catch(Exception e){}
             try{ if (conn != null) conn.close(); }catch(Exception e){}
         }
     }
 
     static void delete(int id){
-        String sql = "DELETE FROM post WHERE id = ";
+        String sql = "DELETE FROM post WHERE id = ?";
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
 
         try {
             // connect database by Connection
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
             // create sql object by Statement
-            stmt = conn.createStatement();
+            pstmt = conn.prepareStatement(sql);
 
             // execute sql and receive results
-            int affectedRows = stmt.executeUpdate(sql + id);
+            pstmt.setInt(1, id);
+            int affectedRows = pstmt.executeUpdate();
+            pstmt.setInt(1, id);
             System.out.println("post deleted : " + affectedRows);
 
         } catch (Exception e) {
@@ -171,7 +238,7 @@ public class JdbcPostTest {
         } finally {
             // release resources by desc(prevent nullpointerexception by if)
             try {
-                if (stmt != null) stmt.close();
+                if (pstmt != null) pstmt.close();
             } catch (Exception e) {
             }
             try {
@@ -182,19 +249,20 @@ public class JdbcPostTest {
     }
 
     static void deleteAll(int memberId){
-        String sql = "DELETE FROM post WHERE member_id = ";
+        String sql = "DELETE FROM post WHERE member_id = ?";
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
 
         try {
             // connect database by Connection
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
             // create sql object by Statement
-            stmt = conn.createStatement();
+            pstmt = conn.prepareStatement(sql);
 
             // execute sql and receive results
-            int affectedRows = stmt.executeUpdate(sql + memberId);
+            pstmt.setInt(1, memberId);
+            int affectedRows = pstmt.executeUpdate();
             System.out.println("post deleted : " + affectedRows);
 
         } catch (Exception e) {
@@ -203,7 +271,7 @@ public class JdbcPostTest {
         } finally {
             // release resources by desc(prevent nullpointerexception by if)
             try {
-                if (stmt != null) stmt.close();
+                if (pstmt != null) pstmt.close();
             } catch (Exception e) {
             }
             try {

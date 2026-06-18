@@ -5,20 +5,60 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class JdbcPostTest {
+public class JdbcMemberTest {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/board_db?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true";
     private static final String DB_USER = "user1";
     private static final String DB_PASSWORD = "1111";
 
     public static void main(String[] args){
-        findAll();
+        /*findAll();
         insert(3, "hello", "world");
         findById(13);
         update(29, "title changed", "content changed");
         delete(13);
         findAll();
         deleteAll(4);
-        findAll();
+        findAll();*/
+        login("namu@gmail.com", "pwd789");
+        login("haru@gmail.com", "pwd123");
+    }
+
+    public static void login(String email, String password){
+        String sql = "SELECT * FROM member WHERE email = '"+email+"' AND password = '"+password+"'";
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try{
+            // connect database by Connection
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+            // create sql object by Statement
+            stmt = conn.createStatement();
+
+            // execute sql
+            rs = stmt.executeQuery(sql);
+
+            // receive results
+            if(rs.next()){
+                System.out.println("login success");
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String phone = rs.getString("phone");
+                System.out.println("ID : " + id + ", email : " + email + ", name : " + name + ", phone : " + phone);
+            }else{
+                System.out.println("incorrect id/password");
+            }
+
+        }catch(Exception e){
+            System.out.println("exception occurred : " + e.getMessage());
+            e.printStackTrace();
+        }finally{
+            // release resources by desc(prevent nullpointerexception by if)
+            try{ if (rs != null) rs.close(); }catch(Exception e){}
+            try{ if (stmt != null) stmt.close(); }catch(Exception e){}
+            try{ if (conn != null) conn.close(); }catch(Exception e){}
+        }
     }
 
     static void insert(int memberId, String title, String content){
