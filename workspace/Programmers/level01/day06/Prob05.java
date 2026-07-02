@@ -5,11 +5,13 @@ public class Prob05 {
         int[] answer = new int[queries.length];
         for(int i = 0; i < answer.length; i++){
             int min = -1;
-            for(int j = queries[i][0]; j < queries[i][1] - queries[i][0] + 1; j++){
+            for(int j = queries[i][0]; j < queries[i][1] + 1; j++){
                 if(arr[j] > queries[i][2]){
-
-
-                    min = arr[j];
+                    if(min == -1){
+                        min = arr[j];
+                    }else if(min >= 0 && arr[j] < min){
+                        min = arr[j];
+                    }
                 }
             }
             answer[i] = min;

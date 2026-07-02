@@ -11,6 +11,7 @@ public class Prob03 {
                     if(answer[1] % i == 0 && answer[0] % i == 0){
                         answer[1] /= i;
                         answer[0] /= i;
+                        i = 2;
                     }
                 }
             }else{
@@ -20,6 +21,7 @@ public class Prob03 {
                     if(answer[1] % j == 0 && answer[0] % j == 0){
                         answer[1] /= j;
                         answer[0] /= j;
+                        j = 2;
                     }
                 }
             }
