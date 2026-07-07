@@ -5,7 +5,7 @@ public interface MyList<E> {
      * 지정한 데이터를 마지막 요소로 추가한다.
      * @param obj 추가할 데이터
      */
-    void add(Object obj);
+    void add(E obj);
 
     /**
      * 지정한 데이터를 index 위치에 삽입한다.
@@ -25,7 +25,7 @@ public interface MyList<E> {
      * @param index 조회할 데이터
      * @return
      */
-    Object get(int index);
+    E get(int index);
 
     /**
      * 데이터의 수를 반환한다.
