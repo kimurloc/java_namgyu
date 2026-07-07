@@ -39,13 +39,16 @@ public class CalculatorJUnitTest {
         }*/
     }
 
+    @Test
+    @DisplayName("verifying 10/6")
     void divide(){
         double result = calc.divide(10, 6);
-        if(result == 1.67){
+        assertEquals(1.67, result, "result should be 1.67");
+        /*if(result == 1.67){
             System.out.println("verified");
         }else{
             System.err.println("result should be 1.67");
-        }
+        }*/
     }
 
     @Test
